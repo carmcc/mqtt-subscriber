@@ -2,14 +2,14 @@ import paho.mqtt.client as mqtt_client
 
 broker_addr = 'localhost'
 port = 1883
-topic = input('Enter a topic: ' + '[default] = test/topic')
+topic = input('Enter a topic: ' + '[default] = test/topic: ')
 username = input('Enter a username: ')
 password = input('Enter a password: ')
 
 
 if not topic:
     topic = 'test/topic'
-    print('No topic entered, using default topic: test/topic')
+    print('No topic entered, using default topic: %s' % topic)
 
 
 def on_connect(client, userdata, flags, return_code):
