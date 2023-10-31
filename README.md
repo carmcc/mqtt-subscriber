@@ -14,11 +14,15 @@ mosquitto
 git clone https://github.com/carmcc/mqtt-subscriber
 cd mqtt-subscriber
 ```
-- Install libraries
+- Install the dependencies.
 ```
 pip install -r requirements.txt
 ```
-- Run the client
+- Run the client.
 ```
 python3 subscriber.py
 ```
+- Publish some messages. 
+```
+mosquitto_pub -d -t 'test/topic' -m 'Message'
+``` 
