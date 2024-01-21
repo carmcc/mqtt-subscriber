@@ -1,28 +1,47 @@
 import paho.mqtt.client as mqtt_client
 
-port = input('Enter a port: ' + '[default = 1883]: ')
-broker_addr = input('Enter a broker address: ' + '[default = localhost]: ')
-topic = input('Enter a topic: ' + '[default = test/topic]: ')
+DEFAULT_PORT = 1883
+DEFAULT_BROKER_ADDR = 'localhost'
+DEFAULT_TOPIC = 'test/topic'
+
+
+def get_valid_port():
+    while True:
+        port = input(f'Enter a port: [default = {DEFAULT_PORT}]: ')
+        if not port:
+            return DEFAULT_PORT
+        elif port.isdigit() and 0 <= int(port) <= 65535:
+            return int(port)
+        else:
+            print('Invalid port entered, please try again')
+
+
+def get_valid_topic():
+    while True:
+        topic = input(f'Enter a topic: [default = {DEFAULT_TOPIC}]: ')
+        if not topic:
+            return DEFAULT_TOPIC
+        elif '#' in topic or '+' in topic:
+            print('Invalid topic entered. Topics should not contain wildcards like # or +')
+        else:
+            return topic
+
+
+port = get_valid_port()
+topic = get_valid_topic()
+broker_addr = input(f'Enter a broker address: [default = {DEFAULT_BROKER_ADDR}]: ')
 username = input('Enter a username: ')
 password = input('Enter a password: ')
 
-
-if not topic:
-    topic = 'test/topic'
-    print('No topic entered, using default topic: %s' % topic)
 if not broker_addr:
     broker_addr = 'localhost'
     print('No broker address entered, using default address: %s' % broker_addr)
-if not port:
-    port = 1883
-    print('No port entered, using default port: %s' % port)
 
 
 def on_connect(client, userdata, flags, return_code):
     if return_code == 0:
         print('Connected with return code: %s' % return_code)
         client.subscribe(topic)
-
     else:
         print('Connection failed with return code: %s\nRetrying' % return_code)
 
