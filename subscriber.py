@@ -27,9 +27,28 @@ def get_valid_topic():
             return topic
 
 
+def get_valid_broker_addr():
+    while True:
+        broker_addr = input(f'Enter a broker address: [default = {DEFAULT_BROKER_ADDR}]: ')
+        if not broker_addr:
+            return DEFAULT_BROKER_ADDR
+        elif is_valid_ipv4(broker_addr):
+            return broker_addr
+        else:
+            print('Invalid broker address entered, please try again')
+
+def is_valid_ipv4(ip):
+    octets = ip.split('.')
+    if len(octets) != 4:
+        return False
+    for octet in octets:
+        if not octet.isdigit() or not 0 <= int(octet) <= 255:
+            return False
+    return True
+
 port = get_valid_port()
 topic = get_valid_topic()
-broker_addr = input(f'Enter a broker address: [default = {DEFAULT_BROKER_ADDR}]: ')
+broker_addr = get_valid_broker_addr()
 username = input('Enter a username: ')
 password = input('Enter a password: ')
 
